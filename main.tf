@@ -1,13 +1,13 @@
 # for my ec2 instance
-resource "aws_instance" "for_public_access" {
-   instance_type = "t2.micro"
-   availability_zone = "Us-east-1"
-   ami               = "03a6eaae9938c858c"
+resource "aws_instance" "access" {
+  instance_type     = "t2.micro"
+  availability_zone = "us-east-1a"
+  ami               = "ami-03a6eaae9938c858c"
 
-   tags = {
+  tags = {
     Name = var.instance_name
-   }
-}   
+  }
+}
 
 # VPC
 resource "aws_vpc" "test-terraform" {
@@ -19,9 +19,9 @@ resource "aws_vpc" "test-terraform" {
 }
 
 # pub subnet
-resource "aws_subnet" "pub-aws_subnet" {
+resource "aws_subnet" "pub_subnet" {
   vpc_id            = aws_vpc.test-terraform.id
-  cidr_block        = "10.1.0.0/24"
+  cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 
   tags = {
@@ -31,9 +31,9 @@ resource "aws_subnet" "pub-aws_subnet" {
 
 
 # my private subnet
-resource "aws_subnet" "priv-aws_subnet" {
+resource "aws_subnet" "priv_subnet" {
   vpc_id            = aws_vpc.test-terraform.id
-  cidr_block        = "10.2.0.0/24"
+  cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1b"
 
   tags = {
@@ -48,10 +48,10 @@ resource "aws_security_group" "for_public_access" {
   vpc_id      = aws_vpc.test-terraform.id
 
   ingress {
-    description      = "public access"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "-1"
+    description = "public access"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "-1"
   }
 
   egress {
