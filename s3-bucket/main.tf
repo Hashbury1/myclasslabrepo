@@ -1,26 +1,13 @@
-# resource "aws_s3_bucket" "test_purpose" {
-#   bucket = "for-lock-"
-#   acl    = "private"
 
-#   versioning {
-#     enabled = true
-#   }
 
-#   tags = {
-#     Name        = "for lock tf"
-
-#     Environment = "Dev"
-#   }
-# }
-
-resource "aws_s3_bucket" "test_archibong" {
-  bucket              = "test-archibong"
+resource "aws_s3_bucket" "bucket" {
+  bucket              = var.bucketname
   force_destroy       = "true"
   object_lock_enabled = "false"
 
 
   tags = {
-    Name        = "testing"
+    Name        = var.bucketname
     Environment = "Dev"
   }
 }
