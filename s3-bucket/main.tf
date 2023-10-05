@@ -1,32 +1,79 @@
 
 
 resource "aws_s3_bucket" "bucket" {
-  bucket              = var.bucketname
+  bucket              = "tera-hash"
   force_destroy       = "true"
   object_lock_enabled = "false"
 
 
   tags = {
-    Name        = var.bucketname
+    Name        = "tera-hash"
     Environment = "Dev"
   }
 }
 
-# resource "aws_s3_bucket_versioning" "tf_versioning" {
-#   bucket = "test-hash"
-#   versioning_configuration {
-#     status = "Enabled"
-#   }
-# }
+resource "aws_s3_bucket_ownership_controls" "control" {
+  bucket = aws_s3_bucket.bucket.id
 
-# # Upload object into the bucket
-# resource "aws_s3_bucket_object" "test_archibong" {
-#   bucket = "test_archibong"
-#   key    = "show up.png"
-#   source = "/home/hashbury/Documents/GitHub/terraform-demo/s3-bucket/another.jpeg"
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
 
-#   # The filemd5() function is available in Terraform 0.11.12 and later
-#   # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-#   # etag = "${md5(file("path/to/file"))}"
-# }
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.bucket.id
 
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.control,
+    aws_s3_bucket_public_access_block.example,
+  ]
+
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "public-read"
+}
+
+
+# Upload object into the bucket
+
+resource "aws_s3_bucket_object" "index" {
+  bucket = aws_s3_bucket.bucket.id
+  key = "index.html"
+  source     = "index.html"
+  acl = "public-read"
+  content_type = "text/html"
+}
+
+resource "aws_s3_bucket_object" "error" {
+  bucket = aws_s3_bucket.bucket.id
+  key = "error.html"
+  source     = "error.html"
+  acl = "public-read"
+  content_type = "text/html"
+}
+
+resource "aws_s3_object" "show" {
+  bucket = aws_s3_bucket.bucket.id
+  key = "show.png"
+  source = "show.png"
+  acl = "public-read"
+}
+
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.bucket.id
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+
+  depends_on = [ aws_s3_bucket_acl.example ]
+}
