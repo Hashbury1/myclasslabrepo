@@ -5,7 +5,3 @@ variable "instance_name" {
 }
 
 
-# variable "ami" {
-#     description = "the AMI for my instance"
-#     ami         = "ami-03a6eaae9938c858c"
-# }
