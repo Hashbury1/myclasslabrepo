@@ -7,3 +7,10 @@ resource "aws_s3_bucket" "bucket" {
     Environment = "Dev"
   }
 }
+
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = var.bucketname.id 
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
