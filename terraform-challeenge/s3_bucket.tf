@@ -1,15 +1,15 @@
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = var.bucketname
+  bucket = "tf-test-prod"
 
   tags = {
-    Name        = var.bucketname
+    Name        = "tf-test-prod"
     Environment = "Dev"
   }
 }
 
 resource "aws_s3_bucket_versioning" "versioning" {
-  bucket = var.bucketname.id
+  bucket = "tf-test-prod"
   versioning_configuration {
     status = "Enabled"
   }
