@@ -17,3 +17,11 @@ resource "aws_subnet" "main" {
   }
 }
 
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.for-vpc.id
+
+  tags = {
+    Name = "IGW"
+  }
+}
+
