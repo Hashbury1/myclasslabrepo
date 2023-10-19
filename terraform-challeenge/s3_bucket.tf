@@ -1,9 +1,9 @@
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "my-tf-test-bucket"
+  bucket = var.bucketname
 
   tags = {
-    Name        = "My bucket"
+    Name        = var.bucketname
     Environment = "Dev"
   }
 }
