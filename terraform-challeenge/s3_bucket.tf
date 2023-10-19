@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "versioning" {
-  bucket = var.bucketname.id 
+  bucket = var.bucketname.id
   versioning_configuration {
     status = "Enabled"
   }

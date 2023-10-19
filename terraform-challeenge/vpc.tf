@@ -1,27 +1,27 @@
-# Create a VPC
-resource "aws_vpc" "vpc" {
-  cidr_block = "10.0.0.0/16"
-  instance_tenancy = "default"
+# # Create a VPC
+# resource "aws_vpc" "vpc" {
+#   cidr_block = "10.0.0.0/16"
+#   instance_tenancy = "default"
 
-  tags = {
-    Name = "for-vpc"
-  }
-}
+#   tags = {
+#     Name = "for-vpc"
+#   }
+# }
 
-resource "aws_subnet" "main" {
-  vpc_id     = aws_vpc.for-vpc.id
-  cidr_block = "10.0.1.0/24"
+# resource "aws_subnet" "main" {
+#   vpc_id     = aws_vpc.for-vpc.id
+#   cidr_block = "10.0.1.0/24"
 
-  tags = {
-    Name = "public-subnet"
-  }
-}
+#   tags = {
+#     Name = "public-subnet"
+#   }
+# }
 
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.for-vpc.id
+# resource "aws_internet_gateway" "igw" {
+#   vpc_id = aws_vpc.for-vpc.id
 
-  tags = {
-    Name = "IGW"
-  }
-}
+#   tags = {
+#     Name = "IGW"
+#   }
+# }
 
